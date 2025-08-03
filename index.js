@@ -149,6 +149,13 @@ app.get('/webhook', async (req, res) => {
     ctx.drawImage(mapImg, 0, 175);
     ctx.drawImage(flagImg, 30, 88);
 
+    //draw a black swuasre 
+    ctx.fillStyle = 'rgba(0, 0, 0, 1)';
+    ctx.fillRect(809, 645, 391, 30);
+
+    ctx.fillStyle = 'white';
+    ctx.font = '21px Figtree-Bold';
+    ctx.fillText('Hecho por Cheskodev', 904, 667);
     // Set font and color
     
     ctx.fillStyle = 'white';
