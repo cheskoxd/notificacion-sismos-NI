@@ -98,7 +98,7 @@ const centralAmericaCountryCodes = {
 app.get('/webhook', async (req, res) => {
 //   const { magnitude, location, lat, lon, depth } = req.body;
 
-  const {magnitude, location, lat, lon, depth, all} = await fetchAndParse();
+  const {magnitude, location, lat, lon, depth, all, date} = await fetchAndParse();
 
   if (lastImagePath) {
         fs.unlink(lastImagePath, (err) => {
@@ -181,7 +181,7 @@ app.get('/webhook', async (req, res) => {
     lastSismo = all; 
     lastImagePath = outputPath;
 
-    res.status(200).send({ status: 'ok', image: outputPath,magnitude, location, depth })
+    res.status(200).send({ status: 'ok', image: outputPath,magnitude, location, depth, date })
     
     // const pass = new PassThrough();
     // PImage.encodePNGToStream(img, pass);
