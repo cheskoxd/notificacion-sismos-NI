@@ -73,8 +73,10 @@ const GOOGLE_MAPS_API_KEY = 'AIzaSyCHbqQN5KxV3OT68I9bRiZvMl-sdeaJUMs'; // <-- Re
 
 
 let lastSismo = ""
+let lastImagePath = "";
 
 app.use(express.json());
+app.use(express.static('public'));
 
 
 PImage.registerFont(path.join(__dirname, 'static/Figtree.ttf'), 'Figtree').loadSync();
@@ -97,6 +99,17 @@ app.get('/webhook', async (req, res) => {
 //   const { magnitude, location, lat, lon, depth } = req.body;
 
   const {magnitude, location, lat, lon, depth, all} = await fetchAndParse();
+
+  if (lastImagePath) {
+        fs.unlink(lastImagePath, (err) => {
+            if (err) {
+                console.error("Error deleting previous image:", err);
+            } else {
+                console.log("Successfully deleted old image:", lastImagePath);
+            }
+        });
+    }
+
 
   if( lastSismo === all) {
     console.log("No new sismo detected, skipping image generation.");
@@ -140,7 +153,7 @@ app.get('/webhook', async (req, res) => {
     
     ctx.fillStyle = 'white';
     ctx.font = '50px Figtree-Black';
-    ctx.fillText('SISMO en' + countryCode, 30, 70);
+    ctx.fillText('Sismo en ' + countryCode, 30, 70);
     
     ctx.fillStyle = '#dddddd';
     ctx.font = '35px Figtree-Bold';
@@ -161,21 +174,23 @@ app.get('/webhook', async (req, res) => {
     ctx.fillText(`${depth}km`, depth >= 10 ? 800 : 815, 132);
     ctx.fillText(`${magnitude}`, 1040, 132);
 
-    // const outputPath = `output/sismo_image.png`;
-    // const outStream = fs.createWriteStream(outputPath);
-    // await PImage.encodePNGToStream(img, outStream);
-
-    // res.status(200).send({ status: 'ok', image: outputPath })
-    
-    const pass = new PassThrough();
-    PImage.encodePNGToStream(img, pass);
-
-    const buf = await buffer(pass);
-    const base64 = buf.toString('base64');
-
+    const outputPath = `sismo_${Date.now()}.png`;
+    const outStream = fs.createWriteStream("public/"+ outputPath);
+    await PImage.encodePNGToStream(img, outStream);
+    outStream.end();
     lastSismo = all; 
+    lastImagePath = outputPath;
 
-    res.status(200).send({ status: 'ok', image: `data:image/png;base64,${base64}` });
+    res.status(200).send({ status: 'ok', image: outputPath })
+    
+    // const pass = new PassThrough();
+    // PImage.encodePNGToStream(img, pass);
+
+    // const buf = await buffer(pass);
+    // const base64 = buf.toString('base64');
+
+
+    // res.status(200).send({ status: 'ok', image: `data:image/png;base64,${base64}` });
         
   } catch (err) {
     console.error(err);
