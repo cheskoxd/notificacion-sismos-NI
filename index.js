@@ -150,8 +150,8 @@ app.get('/webhook', async (req, res) => {
     ctx.fillStyle = '#c4c4c4';
     ctx.font = '30px Figtree-Black';
     
-    ctx.fillText('Profundidad', 795,50 );
-    ctx.fillText('Magnitud', 1027,50 );
+    ctx.fillText('Profundidad', 795,54 );
+    ctx.fillText('Magnitud', 1027,54 );
 
     ctx.fillStyle = 'white';
     ctx.font = '66pt Figtree-Black';
