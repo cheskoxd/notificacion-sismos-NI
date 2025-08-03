@@ -181,7 +181,7 @@ app.get('/webhook', async (req, res) => {
     lastSismo = all; 
     lastImagePath = outputPath;
 
-    res.status(200).send({ status: 'ok', image: outputPath })
+    res.status(200).send({ status: 'ok', image: outputPath,magnitude, location, depth })
     
     // const pass = new PassThrough();
     // PImage.encodePNGToStream(img, pass);
