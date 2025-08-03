@@ -184,7 +184,7 @@ app.get('/webhook', async (req, res) => {
     const outputPath = `sismo_${Date.now()}.png`;
     const outStream = fs.createWriteStream("public/"+ outputPath);
     await PImage.encodePNGToStream(img, outStream);
-    outStream.end();
+    // outStream.end();
     lastSismo = all; 
     lastImagePath = outputPath;
 
