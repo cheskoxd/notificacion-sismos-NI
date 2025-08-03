@@ -100,7 +100,7 @@ app.get('/webhook', async (req, res) => {
 
   const {magnitude, location, lat, lon, depth, all, date} = await fetchAndParse();
 
-  if (lastImagePath) {
+  if (lastImagePath !== "") {
         fs.unlink(lastImagePath, (err) => {
             if (err) {
                 console.error("Error deleting previous image:", err);
