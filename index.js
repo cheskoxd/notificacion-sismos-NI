@@ -7,6 +7,10 @@ const app = express();
 
 const cheerio = require('cheerio');
 const https = require('https');
+//import env 
+require('dotenv').config();
+
+
 
 // Create an axios instance that ignores SSL certificate errors
 const instance = axios.create({
@@ -69,7 +73,7 @@ async function fetchAndParse() {
 const { PassThrough } = require('stream');
 const { buffer } = require('stream/consumers');
 
-const GOOGLE_MAPS_API_KEY = 'AIzaSyCHbqQN5KxV3OT68I9bRiZvMl-sdeaJUMs'; // <-- Replace this
+const GOOGLE_MAPS_API_KEY = process.env.GOOGLE_MAPS_API_KEY; // <-- Replace this
 
 
 let lastSismo = ""
